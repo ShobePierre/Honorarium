@@ -10,18 +10,18 @@ export const getBeneficiaries = async () => {
   }
 };
 
-export const createBeneficiary = async (name) => {
+export const createBeneficiary = async (beneficiaryData) => {
   try {
-    return await invoke("create_beneficiary", { name });
+    return await invoke("create_beneficiary", { data: beneficiaryData });
   } catch (error) {
     console.error("Failed to create beneficiary:", error);
     throw error;
   }
 };
 
-export const updateBeneficiary = async (id, name) => {
+export const updateBeneficiary = async (id, beneficiaryData) => {
   try {
-    return await invoke("update_beneficiary", { id, name });
+    return await invoke("update_beneficiary", { id, data: beneficiaryData });
   } catch (error) {
     console.error("Failed to update beneficiary:", error);
     throw error;

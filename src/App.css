@@ -36,6 +36,82 @@ h2 {
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
 }
 
+.form-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 1.5rem;
+  margin-bottom: 1.5rem;
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+}
+
+.form-group label {
+  margin-bottom: 0.5rem;
+  font-weight: 600;
+  color: #333;
+  font-size: 0.9rem;
+}
+
+.form-group input {
+  padding: 0.75rem;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  font-size: 0.95rem;
+  transition: border-color 0.3s;
+}
+
+.form-group input:focus {
+  outline: none;
+  border-color: #4a90e2;
+  box-shadow: 0 0 0 3px rgba(74, 144, 226, 0.1);
+}
+
+.button-group {
+  display: flex;
+  gap: 1rem;
+  margin-top: 1.5rem;
+}
+
+.btn-primary {
+  padding: 0.75rem 2rem;
+  background-color: #4a90e2;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 1rem;
+  font-weight: 600;
+  transition: background-color 0.3s, transform 0.1s;
+}
+
+.btn-primary:hover:not(:disabled) {
+  background-color: #357abd;
+  transform: translateY(-2px);
+  box-shadow: 0 2px 8px rgba(74, 144, 226, 0.3);
+}
+
+.btn-primary:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.edit-form-container {
+  background: #fff;
+  padding: 2rem;
+  border-radius: 8px;
+  border: 2px solid #f39c12;
+  margin-bottom: 2rem;
+}
+
+.edit-form-container h3 {
+  margin-top: 0;
+  margin-bottom: 1.5rem;
+  color: #333;
+}
+
 .input-group {
   display: flex;
   gap: 1rem;
@@ -84,6 +160,7 @@ h2 {
   padding: 2rem;
   border-radius: 8px;
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+  overflow-x: auto;
 }
 
 .empty-message {
@@ -97,24 +174,30 @@ h2 {
   width: 100%;
   border-collapse: collapse;
   margin-top: 1rem;
+  min-width: 1400px;
 }
 
 .beneficiaries-table thead {
   background-color: #f0f0f0;
+  position: sticky;
+  top: 0;
 }
 
 .beneficiaries-table th {
-  padding: 1rem;
+  padding: 0.75rem 0.5rem;
   text-align: left;
   font-weight: 600;
   color: #333;
   border-bottom: 2px solid #ddd;
+  font-size: 0.9rem;
+  white-space: nowrap;
 }
 
 .beneficiaries-table td {
-  padding: 1rem;
+  padding: 0.75rem 0.5rem;
   border-bottom: 1px solid #eee;
   color: #555;
+  font-size: 0.9rem;
 }
 
 .beneficiaries-table tbody tr:hover {
@@ -132,6 +215,7 @@ h2 {
 .beneficiaries-table td:last-child {
   display: flex;
   gap: 0.5rem;
+  white-space: nowrap;
 }
 
 button {
@@ -190,24 +274,53 @@ button {
     margin-bottom: 1rem;
   }
 
+  h2 {
+    font-size: 1.2rem;
+  }
+
+  .form-grid {
+    grid-template-columns: 1fr;
+    gap: 1rem;
+  }
+
   .input-group {
     flex-direction: column;
   }
 
   .beneficiaries-table {
-    font-size: 0.9rem;
+    font-size: 0.85rem;
+    min-width: 0;
+    width: 100%;
   }
 
   .beneficiaries-table th,
   .beneficiaries-table td {
-    padding: 0.75rem 0.5rem;
+    padding: 0.5rem 0.25rem;
+  }
+
+  .beneficiaries-table th {
+    font-size: 0.8rem;
   }
 
   .beneficiaries-table td:last-child {
     flex-direction: column;
+    gap: 0.25rem;
+  }
+
+  .beneficiaries-table td:last-child button {
+    padding: 0.4rem 0.6rem;
+    font-size: 0.8rem;
   }
 
   button {
+    width: 100%;
+  }
+
+  .button-group {
+    flex-direction: column;
+  }
+
+  .button-group button {
     width: 100%;
   }
 }
