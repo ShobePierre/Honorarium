@@ -1,11 +1,11 @@
-import { useState, useEffect } from "react";
+﻿import { useState, useEffect } from "react";
 import {
   getBeneficiaries,
   createBeneficiary,
   updateBeneficiary,
   deleteBeneficiary,
 } from "./services/beneficiary";
-import "./App.css";
+import "./styles/App.css";
 
 function App() {
   const [beneficiaries, setBeneficiaries] = useState([]);
@@ -25,7 +25,7 @@ function App() {
     time: "",
     nature: "",
     rate_per_hour: "",
-    hours_per_hour: "",
+    hours_per_day: "",
   });
 
   // Edit form state
@@ -40,7 +40,7 @@ function App() {
     time: "",
     nature: "",
     rate_per_hour: "",
-    hours_per_hour: "",
+    hours_per_day: "",
   });
 
   // Fetch beneficiaries on mount
@@ -96,7 +96,7 @@ function App() {
         time: formData.time && formData.time.trim() ? formData.time : null,
         nature: formData.nature && formData.nature.trim() ? formData.nature : null,
         rate_per_hour: formData.rate_per_hour && formData.rate_per_hour.trim() ? parseFloat(formData.rate_per_hour) : null,
-        hours_per_hour: formData.hours_per_hour && formData.hours_per_hour.trim() ? parseFloat(formData.hours_per_hour) : null,
+        hours_per_day: formData.hours_per_day && formData.hours_per_day.trim() ? parseFloat(formData.hours_per_day) : null,
       };
       await createBeneficiary(beneficiaryData);
       setFormData({
@@ -110,7 +110,7 @@ function App() {
         time: "",
         nature: "",
         rate_per_hour: "",
-        hours_per_hour: "",
+        hours_per_day: "",
       });
       await fetchBeneficiaries();
     } catch (err) {
@@ -137,7 +137,7 @@ function App() {
         time: editFormData.time && editFormData.time.trim() ? editFormData.time : null,
         nature: editFormData.nature && editFormData.nature.trim() ? editFormData.nature : null,
         rate_per_hour: editFormData.rate_per_hour && editFormData.rate_per_hour.trim() ? parseFloat(editFormData.rate_per_hour) : null,
-        hours_per_hour: editFormData.hours_per_hour && editFormData.hours_per_hour.trim() ? parseFloat(editFormData.hours_per_hour) : null,
+        hours_per_day: editFormData.hours_per_day && editFormData.hours_per_day.trim() ? parseFloat(editFormData.hours_per_day) : null,
       };
       await updateBeneficiary(id, beneficiaryData);
       setEditingId(null);
@@ -174,7 +174,7 @@ function App() {
       time: beneficiary.time || "",
       nature: beneficiary.nature || "",
       rate_per_hour: beneficiary.rate_per_hour ? String(beneficiary.rate_per_hour) : "",
-      hours_per_hour: beneficiary.hours_per_hour ? String(beneficiary.hours_per_hour) : "",
+      hours_per_day: beneficiary.hours_per_day ? String(beneficiary.hours_per_day) : "",
     });
   };
 
@@ -293,10 +293,10 @@ function App() {
             <label>Hours per Hour</label>
             <input
               type="number"
-              name="hours_per_hour"
+              name="hours_per_day"
               placeholder="Hours per Hour"
               step="0.01"
-              value={formData.hours_per_hour}
+              value={formData.hours_per_day}
               onChange={handleFormChange}
             />
           </div>
@@ -409,12 +409,12 @@ function App() {
                 />
               </div>
               <div className="form-group">
-                <label>Hours per Hour</label>
+                <label>Hours per Day</label>
                 <input
                   type="number"
-                  name="hours_per_hour"
+                  name="hours_per_day"
                   step="0.01"
-                  value={editFormData.hours_per_hour}
+                  value={editFormData.hours_per_day}
                   onChange={handleEditFormChange}
                 />
               </div>
@@ -468,7 +468,7 @@ function App() {
                   <td>{beneficiary.time || "-"}</td>
                   <td>{beneficiary.nature || "-"}</td>
                   <td>{beneficiary.rate_per_hour || "-"}</td>
-                  <td>{beneficiary.hours_per_hour || "-"}</td>
+                  <td>{beneficiary.hours_per_day || "-"}</td>
                   <td>
                     {beneficiary.createdAt
                       ? new Date(beneficiary.createdAt).toLocaleDateString()

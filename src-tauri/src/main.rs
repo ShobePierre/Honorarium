@@ -50,7 +50,7 @@ fn init_db(_app: &AppHandle) -> Result<Connection, String> {
             time TEXT,
             nature TEXT,
             rate_per_hour REAL,
-            hours_per_hour REAL,
+            hours_per_day REAL,
             created_at TEXT DEFAULT CURRENT_TIMESTAMP
         )",
         [],
@@ -74,7 +74,7 @@ pub struct Beneficiary {
     pub time: Option<String>,
     pub nature: Option<String>,
     pub rate_per_hour: Option<f64>,
-    pub hours_per_hour: Option<f64>,
+    pub hours_per_day: Option<f64>,
     #[serde(rename = "createdAt")]
     pub created_at: Option<String>,
 }
@@ -101,7 +101,7 @@ pub struct BeneficiaryInput {
     #[serde(default)]
     pub rate_per_hour: Option<f64>,
     #[serde(default)]
-    pub hours_per_hour: Option<f64>,
+    pub hours_per_day: Option<f64>,
 }
 
 // ============ CRUD COMMANDS ============
@@ -113,9 +113,9 @@ fn create_beneficiary(
 ) -> Result<Beneficiary, String> {
     let conn = init_db(&app)?;
     conn.execute(
-        "INSERT INTO beneficiaries (name, facility, employee_no, rank, subject_code, course_section, day, time, nature, rate_per_hour, hours_per_hour) 
+        "INSERT INTO beneficiaries (name, facility, employee_no, rank, subject_code, course_section, day, time, nature, rate_per_hour, hours_per_day) 
          VALUES (?1, ?2, ?3, ?4, ?5, ?6, ?7, ?8, ?9, ?10, ?11)",
-        params![&data.name, &data.facility, &data.employee_no, &data.rank, &data.subject_code, &data.course_section, &data.day, &data.time, &data.nature, data.rate_per_hour, data.hours_per_hour],
+        params![&data.name, &data.facility, &data.employee_no, &data.rank, &data.subject_code, &data.course_section, &data.day, &data.time, &data.nature, data.rate_per_hour, data.hours_per_day],
     )
     .map_err(|e| format!("Failed to insert: {}", e))?;
 
@@ -135,7 +135,7 @@ fn create_beneficiary(
         time: data.time,
         nature: data.nature,
         rate_per_hour: data.rate_per_hour,
-        hours_per_hour: data.hours_per_hour,
+        hours_per_day: data.hours_per_day,
         created_at: Some(chrono::Local::now().to_rfc3339()),
     })
 }
@@ -144,7 +144,7 @@ fn create_beneficiary(
 fn list_beneficiaries(app: AppHandle) -> Result<Vec<Beneficiary>, String> {
     let conn = init_db(&app)?;
     let mut stmt = conn
-        .prepare("SELECT id, name, facility, employee_no, rank, subject_code, course_section, day, time, nature, rate_per_hour, hours_per_hour, created_at FROM beneficiaries ORDER BY id DESC")
+        .prepare("SELECT id, name, facility, employee_no, rank, subject_code, course_section, day, time, nature, rate_per_hour, hours_per_day, created_at FROM beneficiaries ORDER BY id DESC")
         .map_err(|e| e.to_string())?;
 
     let beneficiaries = stmt
@@ -161,7 +161,7 @@ fn list_beneficiaries(app: AppHandle) -> Result<Vec<Beneficiary>, String> {
                 time: row.get(8)?,
                 nature: row.get(9)?,
                 rate_per_hour: row.get(10)?,
-                hours_per_hour: row.get(11)?,
+                hours_per_day: row.get(11)?,
                 created_at: row.get(12)?,
             })
         })
@@ -180,13 +180,13 @@ fn update_beneficiary(
 ) -> Result<Beneficiary, String> {
     let conn = init_db(&app)?;
     conn.execute(
-        "UPDATE beneficiaries SET name = ?1, facility = ?2, employee_no = ?3, rank = ?4, subject_code = ?5, course_section = ?6, day = ?7, time = ?8, nature = ?9, rate_per_hour = ?10, hours_per_hour = ?11 WHERE id = ?12",
-        params![&data.name, &data.facility, &data.employee_no, &data.rank, &data.subject_code, &data.course_section, &data.day, &data.time, &data.nature, data.rate_per_hour, data.hours_per_hour, id],
+        "UPDATE beneficiaries SET name = ?1, facility = ?2, employee_no = ?3, rank = ?4, subject_code = ?5, course_section = ?6, day = ?7, time = ?8, nature = ?9, rate_per_hour = ?10, hours_per_day = ?11 WHERE id = ?12",
+        params![&data.name, &data.facility, &data.employee_no, &data.rank, &data.subject_code, &data.course_section, &data.day, &data.time, &data.nature, data.rate_per_hour, data.hours_per_day, id],
     )
     .map_err(|e| format!("Failed to update: {}", e))?;
 
     let mut stmt = conn
-        .prepare("SELECT id, name, facility, employee_no, rank, subject_code, course_section, day, time, nature, rate_per_hour, hours_per_hour, created_at FROM beneficiaries WHERE id = ?1")
+        .prepare("SELECT id, name, facility, employee_no, rank, subject_code, course_section, day, time, nature, rate_per_hour, hours_per_day, created_at FROM beneficiaries WHERE id = ?1")
         .map_err(|e| e.to_string())?;
 
     let beneficiary = stmt
@@ -203,7 +203,7 @@ fn update_beneficiary(
                 time: row.get(8)?,
                 nature: row.get(9)?,
                 rate_per_hour: row.get(10)?,
-                hours_per_hour: row.get(11)?,
+                hours_per_day: row.get(11)?,
                 created_at: row.get(12)?,
             })
         })
